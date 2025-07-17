@@ -3,8 +3,8 @@
 
 #include <stdint.h>
 
-#define SS_MAX_LENGTH UINT8_MAX
 #define SS_MAX_DATA_TYPE uint8_t
+#define SS_MAX_LENGTH ((SS_MAX_DATA_TYPE)(-1))
 #define IS_WHITESPACE(c) ((c) == ' ' || (c) == '\t' || (c) == '\n' || (c) == '\r')
 
 typedef struct
