@@ -57,7 +57,7 @@ int main()
     ss_to_lowercase(&s1);
     print_stack_string(s1, "After ss_to_lowercase");
 
-    while
+    while (1)
     {
     }
 
