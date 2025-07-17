@@ -14,6 +14,7 @@ int main()
 
     // Initialization
     ss_init(&s1);
+    ss_init(&s2);
     print_stack_string(s1, "After init");
 
     // From C string
