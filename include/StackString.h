@@ -4,12 +4,13 @@
 #include <stdint.h>
 
 #define SS_MAX_LENGTH UINT8_MAX
+#define SS_MAX_DATA_TYPE uint8_t
 #define IS_WHITESPACE(c) ((c) == ' ' || (c) == '\t' || (c) == '\n' || (c) == '\r')
 
 typedef struct
 {
     char stack_string[SS_MAX_LENGTH + 1];
-    uint16_t string_length;
+    SS_MAX_DATA_TYPE string_length;
 } StackString;
 
 // Initialization
@@ -43,7 +44,7 @@ static inline void ss_init(StackString *ss)
  */
 static inline void ss_from_cstr(StackString *ss, const char *cstr)
 {
-    uint16_t i;
+    SS_MAX_DATA_TYPE i;
     for (i = 0; i < SS_MAX_LENGTH && cstr[i] != '\0'; i++)
     {
         ss->stack_string[i] = cstr[i];
@@ -63,7 +64,7 @@ static inline void ss_from_cstr(StackString *ss, const char *cstr)
 
 static inline void ss_clear(StackString *ss)
 {
-    for (uint16_t i = 0; i < SS_MAX_LENGTH; i++)
+    for (SS_MAX_DATA_TYPE i = 0; i < SS_MAX_LENGTH; i++)
     {
         ss->stack_string[i] = '\0';
     }
@@ -105,7 +106,7 @@ static inline void ss_append(StackString *ss, const char character)
  */
 static inline void ss_append_cstr(StackString *ss, const char *cstr)
 {
-    uint16_t i;
+    SS_MAX_DATA_TYPE i;
     for (i = 0; i < SS_MAX_LENGTH - ss->string_length && cstr[i] != '\0'; i++)
     {
         ss->stack_string[ss->string_length + i] = cstr[i];
@@ -126,7 +127,7 @@ static inline void ss_append_cstr(StackString *ss, const char *cstr)
  *          if the replacement was successful, and 0 if the index is out of
  *          bounds.
  */
-static inline uint8_t ss_replace_char_from_index(StackString *ss, uint16_t index, char character)
+static inline SS_MAX_DATA_TYPE ss_replace_char_from_index(StackString *ss, SS_MAX_DATA_TYPE index, char character)
 {
     if (index >= ss->string_length)
     {
@@ -147,10 +148,10 @@ static inline uint8_t ss_replace_char_from_index(StackString *ss, uint16_t index
  * @details Replaces all occurrences of the given old character with the given
  *          new character. Returns the count of replacements made.
  */
-static inline uint16_t ss_replace_all_chars(StackString *ss, char old_char, char new_char)
+static inline SS_MAX_DATA_TYPE ss_replace_all_chars(StackString *ss, char old_char, char new_char)
 {
-    uint16_t count = 0;
-    for (uint16_t i = 0; i < ss->string_length; i++)
+    SS_MAX_DATA_TYPE count = 0;
+    for (SS_MAX_DATA_TYPE i = 0; i < ss->string_length; i++)
     {
         if (ss->stack_string[i] == old_char)
         {
@@ -171,9 +172,9 @@ static inline uint16_t ss_replace_all_chars(StackString *ss, char old_char, char
  * @details Removes all trailing whitespace from the StackString. Returns the
  *          count of whitespace removed.
  */
-static inline uint16_t ss_trim_trailing(StackString *ss)
+static inline SS_MAX_DATA_TYPE ss_trim_trailing(StackString *ss)
 {
-    uint16_t count = 0;
+    SS_MAX_DATA_TYPE count = 0;
     while (ss->string_length > 0 && ss->stack_string[ss->string_length - 1] == ' ')
     {
         ss->string_length--;
@@ -191,12 +192,12 @@ static inline uint16_t ss_trim_trailing(StackString *ss)
  * @details Removes all leading whitespace from the StackString. Returns the
  *          count of whitespace removed.
  */
-static inline uint16_t ss_trim_leading(StackString *ss)
+static inline SS_MAX_DATA_TYPE ss_trim_leading(StackString *ss)
 {
-    uint16_t count = 0;
+    SS_MAX_DATA_TYPE count = 0;
     while (ss->string_length > 0 && IS_WHITESPACE(ss->stack_string[0]))
     {
-        for (uint16_t i = 0; i < ss->string_length; i++)
+        for (SS_MAX_DATA_TYPE i = 0; i < ss->string_length; i++)
         {
             ss->stack_string[i] = ss->stack_string[i + 1];
         }
@@ -216,9 +217,9 @@ static inline uint16_t ss_trim_leading(StackString *ss)
  *          and trailing whitespace from the StackString. Returns the total count
  *          of whitespace characters removed.
  */
-static inline uint16_t ss_trim(StackString *ss)
+static inline SS_MAX_DATA_TYPE ss_trim(StackString *ss)
 {
-    uint16_t count = 0;
+    SS_MAX_DATA_TYPE count = 0;
     count += ss_trim_leading(ss);
     count += ss_trim_trailing(ss);
     return count;
@@ -235,11 +236,11 @@ static inline uint16_t ss_trim(StackString *ss)
  */
 static inline void ss_strip_all_whitespace(StackString *ss)
 {
-    for (uint16_t i = 0; i < ss->string_length; i++)
+    for (SS_MAX_DATA_TYPE i = 0; i < ss->string_length; i++)
     {
         if (IS_WHITESPACE(ss->stack_string[i]))
         {
-            for (uint16_t j = i; j < ss->string_length - 1; j++)
+            for (SS_MAX_DATA_TYPE j = i; j < ss->string_length - 1; j++)
             {
                 ss->stack_string[j] = ss->stack_string[j + 1];
             }
@@ -263,12 +264,12 @@ static inline void ss_strip_all_whitespace(StackString *ss)
  *          strings. Returns 1 if the strings are equal and 0 if they
  *          are not.
  */
-static inline uint8_t ss_equals(const StackString *ss1, const StackString *ss2)
+static inline SS_MAX_DATA_TYPE ss_equals(const StackString *ss1, const StackString *ss2)
 {
     if (ss1->string_length != ss2->string_length)
         return 0;
 
-    for (uint16_t i = 0; i < ss1->string_length; i++)
+    for (SS_MAX_DATA_TYPE i = 0; i < ss1->string_length; i++)
     {
         if (ss1->stack_string[i] != ss2->stack_string[i])
             return 0;
@@ -288,9 +289,9 @@ static inline uint8_t ss_equals(const StackString *ss1, const StackString *ss2)
  *          strings. Returns 1 if the strings are equal and 0 if they
  *          are not.
  */
-static inline uint8_t ss_equals_cstr(const StackString *ss, const char *cstr)
+static inline SS_MAX_DATA_TYPE ss_equals_cstr(const StackString *ss, const char *cstr)
 {
-    uint16_t i = 0;
+    SS_MAX_DATA_TYPE i = 0;
 
     while (i < ss->string_length && cstr[i] != '\0')
     {
@@ -360,7 +361,7 @@ static inline char ss_pop(StackString *ss)
  * @return 1 if the StackString was truncated, 0 if the StackString was not
  *         modified.
  */
-static inline uint8_t ss_truncate(StackString *ss, uint16_t new_length)
+static inline SS_MAX_DATA_TYPE ss_truncate(StackString *ss, SS_MAX_DATA_TYPE new_length)
 {
     if (new_length > ss->string_length)
     {
@@ -384,7 +385,7 @@ static inline uint8_t ss_truncate(StackString *ss, uint16_t new_length)
  *
  * @return The length of the StackString.
  */
-static inline uint16_t ss_length(const StackString *ss)
+static inline SS_MAX_DATA_TYPE ss_length(const StackString *ss)
 {
     return ss->string_length;
 }
@@ -412,7 +413,7 @@ static inline void ss_copy(StackString *ss1, const StackString *ss2)
         return;
     }
     ss1->string_length = ss2->string_length;
-    for (uint16_t i = 0; i < ss1->string_length; i++)
+    for (SS_MAX_DATA_TYPE i = 0; i < ss1->string_length; i++)
     {
         ss1->stack_string[i] = ss2->stack_string[i];
     }
@@ -431,10 +432,10 @@ static inline void ss_copy(StackString *ss1, const StackString *ss2)
  *
  * @return The count of characters converted.
  */
-static inline uint16_t ss_to_uppercase(StackString *ss)
+static inline SS_MAX_DATA_TYPE ss_to_uppercase(StackString *ss)
 {
-    uint16_t count = 0;
-    for (uint16_t i = 0; i < ss->string_length; i++)
+    SS_MAX_DATA_TYPE count = 0;
+    for (SS_MAX_DATA_TYPE i = 0; i < ss->string_length; i++)
     {
         if (ss->stack_string[i] >= 'a' && ss->stack_string[i] <= 'z')
         {
@@ -456,10 +457,10 @@ static inline uint16_t ss_to_uppercase(StackString *ss)
  *
  * @return The count of characters converted.
  */
-static inline uint16_t ss_to_lowercase(StackString *ss)
+static inline SS_MAX_DATA_TYPE ss_to_lowercase(StackString *ss)
 {
-    uint16_t count = 0;
-    for (uint16_t i = 0; i < ss->string_length; i++)
+    SS_MAX_DATA_TYPE count = 0;
+    for (SS_MAX_DATA_TYPE i = 0; i < ss->string_length; i++)
     {
         if (ss->stack_string[i] >= 'A' && ss->stack_string[i] <= 'Z')
         {
