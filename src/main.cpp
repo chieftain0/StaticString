@@ -59,6 +59,8 @@ int main()
 
     while (1)
     {
+        ss_append(&s1, ' ');
+        ss_trim_trailing(&s1);
     }
 
     return 0;
