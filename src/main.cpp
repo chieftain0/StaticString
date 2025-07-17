@@ -1,4 +1,7 @@
 #include <bits/stdc++.h>
+
+
+#define SS_SIZE_TYPE uint8_t // decides how many characters can be stored)
 #include "StackString.h"
 
 using namespace std;

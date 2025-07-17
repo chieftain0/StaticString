@@ -3,7 +3,11 @@
 
 #include <stdint.h>
 
-typedef uint8_t ss_size_t;
+#ifndef SS_SIZE_TYPE
+#define SS_SIZE_TYPE uint8_t
+#endif
+typedef SS_SIZE_TYPE ss_size_t;
+
 #define SS_MAX_LENGTH ((ss_size_t)(-1))
 #define IS_WHITESPACE(c) ((c) == ' ' || (c) == '\t' || (c) == '\n' || (c) == '\r')
 
