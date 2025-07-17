@@ -5,7 +5,7 @@ using namespace std;
 
 void print_stack_string(const StackString &ss, const char *label)
 {
-    cout << label << ": \"" << ss_to_cstr(&ss) << "\" (len=" << ss.string_length << ")\n";
+    cout << label << ": \"" << ss_to_cstr(&ss) << "\" (len=" << (int)ss.string_length << ")\n";
 }
 
 int main()
@@ -58,11 +58,7 @@ int main()
     ss_to_lowercase(&s1);
     print_stack_string(s1, "After ss_to_lowercase");
 
-    while (1)
-    {
-        ss_append(&s1, ' ');
-        ss_trim_trailing(&s1);
-    }
+    getchar();
 
     return 0;
 }
