@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 
-#define SS_SIZE_TYPE uint8_t // decides how many characters can be stored (default: uint16_t)
+#define SS_MAX_LENGTH 128 // Maximum length of a StackString excluding the null terminator (default: 255)
 #include "StackString.h"
 
 using namespace std;

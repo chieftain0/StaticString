@@ -3,19 +3,16 @@
 
 #include <stdint.h>
 
-#ifndef SS_SIZE_TYPE
-#define SS_SIZE_TYPE uint16_t // decides how many characters can be stored (default: uint16_t)
+#ifndef SS_MAX_LENGTH
+#define SS_MAX_LENGTH ((uint8_t)(-1)) // Maximum length of a StackString excluding the null terminator
 #endif
 
-typedef SS_SIZE_TYPE ss_size_t;
-
-#define SS_MAX_LENGTH ((ss_size_t)(-1))
 #define IS_WHITESPACE(c) ((c) == ' ' || (c) == '\t' || (c) == '\n' || (c) == '\r')
 
 typedef struct
 {
     char stack_string[SS_MAX_LENGTH + 1];
-    ss_size_t string_length;
+    uint32_t string_length;
 } StackString;
 
 /**
@@ -46,7 +43,7 @@ static inline void ss_init(StackString *ss)
  */
 static inline void ss_from_cstr(StackString *ss, const char *cstr)
 {
-    ss_size_t i;
+    uint32_t i;
     for (i = 0; i < SS_MAX_LENGTH && cstr[i] != '\0'; i++)
     {
         ss->stack_string[i] = cstr[i];
@@ -66,7 +63,7 @@ static inline void ss_from_cstr(StackString *ss, const char *cstr)
  */
 static inline void ss_clear(StackString *ss)
 {
-    for (ss_size_t i = 0; i <= SS_MAX_LENGTH; i++)
+    for (uint32_t i = 0; i <= SS_MAX_LENGTH; i++)
     {
         ss->stack_string[i] = '\0';
     }
@@ -82,9 +79,9 @@ static inline void ss_clear(StackString *ss)
  * @param ss Pointer to the StackString to modify.
  * @param character The character to append.
  *
- * @return ss_size_t 1 if the character was appended, 0 if the string was full.
+ * @return uint32_t 1 if the character was appended, 0 if the string was full.
  */
-static inline ss_size_t ss_append(StackString *ss, const char character)
+static inline uint32_t ss_append(StackString *ss, const char character)
 {
     if (ss->string_length < SS_MAX_LENGTH)
     {
@@ -106,16 +103,16 @@ static inline ss_size_t ss_append(StackString *ss, const char character)
  * @param ss Pointer to the StackString to modify.
  * @param cstr Null-terminated C string to append.
  *
- * @return ss_size_t 1 if the append succeeded, 0 if the input was NULL or no space remained.
+ * @return uint32_t 1 if the append succeeded, 0 if the input was NULL or no space remained.
  */
-static inline ss_size_t ss_append_cstr(StackString *ss, const char *cstr)
+static inline uint32_t ss_append_cstr(StackString *ss, const char *cstr)
 {
     if (cstr == NULL || ss->string_length >= SS_MAX_LENGTH)
     {
         return 0;
     }
 
-    ss_size_t i;
+    uint32_t i;
     for (i = 0; i < (SS_MAX_LENGTH - ss->string_length) && cstr[i] != '\0'; i++)
     {
         ss->stack_string[ss->string_length + i] = cstr[i];
@@ -135,9 +132,9 @@ static inline ss_size_t ss_append_cstr(StackString *ss, const char *cstr)
  * @param index Zero-based index of the character to replace.
  * @param character The new character to write at the specified index.
  *
- * @return ss_size_t 1 if the replacement was successful, 0 if the index was out of bounds.
+ * @return uint32_t 1 if the replacement was successful, 0 if the index was out of bounds.
  */
-static inline ss_size_t ss_replace_char_from_index(StackString *ss, ss_size_t index, char character)
+static inline uint32_t ss_replace_char_from_index(StackString *ss, uint32_t index, char character)
 {
     if (index >= ss->string_length)
     {
@@ -158,12 +155,12 @@ static inline ss_size_t ss_replace_char_from_index(StackString *ss, ss_size_t in
  * @param old_char The character to search for.
  * @param new_char The character to replace with.
  *
- * @return ss_size_t The number of characters replaced.
+ * @return uint32_t The number of characters replaced.
  */
-static inline ss_size_t ss_replace_all_chars(StackString *ss, char old_char, char new_char)
+static inline uint32_t ss_replace_all_chars(StackString *ss, char old_char, char new_char)
 {
-    ss_size_t count = 0;
-    for (ss_size_t i = 0; i < ss->string_length; i++)
+    uint32_t count = 0;
+    for (uint32_t i = 0; i < ss->string_length; i++)
     {
         if (ss->stack_string[i] == old_char)
         {
@@ -182,11 +179,11 @@ static inline ss_size_t ss_replace_all_chars(StackString *ss, char old_char, cha
  *
  * @param ss Pointer to the StackString to modify.
  *
- * @return ss_size_t The number of characters trimmed from the end.
+ * @return uint32_t The number of characters trimmed from the end.
  */
-static inline ss_size_t ss_trim_trailing(StackString *ss)
+static inline uint32_t ss_trim_trailing(StackString *ss)
 {
-    ss_size_t count = 0;
+    uint32_t count = 0;
     while (ss->string_length > 0 && IS_WHITESPACE(ss->stack_string[ss->string_length - 1]))
     {
         ss->string_length--;
@@ -204,11 +201,11 @@ static inline ss_size_t ss_trim_trailing(StackString *ss)
  *
  * @param ss Pointer to the StackString to modify.
  *
- * @return ss_size_t The number of characters removed from the beginning.
+ * @return uint32_t The number of characters removed from the beginning.
  */
-static inline ss_size_t ss_trim_leading(StackString *ss)
+static inline uint32_t ss_trim_leading(StackString *ss)
 {
-    ss_size_t offset = 0;
+    uint32_t offset = 0;
 
     while (offset < ss->string_length && IS_WHITESPACE(ss->stack_string[offset]))
     {
@@ -217,7 +214,7 @@ static inline ss_size_t ss_trim_leading(StackString *ss)
 
     if (offset > 0)
     {
-        for (ss_size_t i = 0; i <= ss->string_length - offset; i++)
+        for (uint32_t i = 0; i <= ss->string_length - offset; i++)
         {
             ss->stack_string[i] = ss->stack_string[i + offset];
         }
@@ -235,11 +232,11 @@ static inline ss_size_t ss_trim_leading(StackString *ss)
  *
  * @param ss Pointer to the StackString to modify.
  *
- * @return ss_size_t The total number of characters removed.
+ * @return uint32_t The total number of characters removed.
  */
-static inline ss_size_t ss_trim(StackString *ss)
+static inline uint32_t ss_trim(StackString *ss)
 {
-    ss_size_t count = 0;
+    uint32_t count = 0;
     count += ss_trim_leading(ss);
     count += ss_trim_trailing(ss);
     return count;
@@ -256,8 +253,8 @@ static inline ss_size_t ss_trim(StackString *ss)
  */
 static inline void ss_strip_all_whitespace(StackString *ss)
 {
-    ss_size_t write = 0;
-    for (ss_size_t read = 0; read < ss->string_length; read++)
+    uint32_t write = 0;
+    for (uint32_t read = 0; read < ss->string_length; read++)
     {
         if (!IS_WHITESPACE(ss->stack_string[read]))
         {
@@ -276,14 +273,14 @@ static inline void ss_strip_all_whitespace(StackString *ss)
  * @param ss1 Pointer to the first StackString.
  * @param ss2 Pointer to the second StackString.
  *
- * @return ss_size_t 1 if the strings are equal, 0 otherwise.
+ * @return uint32_t 1 if the strings are equal, 0 otherwise.
  */
-static inline ss_size_t ss_equals(const StackString *ss1, const StackString *ss2)
+static inline uint32_t ss_equals(const StackString *ss1, const StackString *ss2)
 {
     if (ss1->string_length != ss2->string_length)
         return 0;
 
-    for (ss_size_t i = 0; i < ss1->string_length; i++)
+    for (uint32_t i = 0; i < ss1->string_length; i++)
     {
         if (ss1->stack_string[i] != ss2->stack_string[i])
             return 0;
@@ -301,16 +298,16 @@ static inline ss_size_t ss_equals(const StackString *ss1, const StackString *ss2
  * @param ss Pointer to the StackString.
  * @param cstr Pointer to the null-terminated C string.
  *
- * @return ss_size_t 1 if the strings are equal, 0 otherwise.
+ * @return uint32_t 1 if the strings are equal, 0 otherwise.
  */
-static inline ss_size_t ss_equals_cstr(const StackString *ss, const char *cstr)
+static inline uint32_t ss_equals_cstr(const StackString *ss, const char *cstr)
 {
     if (cstr == NULL)
     {
         return 0;
     }
 
-    ss_size_t i = 0;
+    uint32_t i = 0;
 
     while (i < ss->string_length && cstr[i] != '\0')
     {
@@ -370,9 +367,9 @@ static inline char ss_pop(StackString *ss)
  * @param ss Pointer to the StackString to truncate.
  * @param new_length The desired new length of the string.
  *
- * @return ss_size_t 1 if the truncation was successful, 0 if new_length is greater than current length.
+ * @return uint32_t 1 if the truncation was successful, 0 if new_length is greater than current length.
  */
-static inline ss_size_t ss_truncate(StackString *ss, ss_size_t new_length)
+static inline uint32_t ss_truncate(StackString *ss, uint32_t new_length)
 {
     if (new_length > ss->string_length || new_length > SS_MAX_LENGTH)
     {
@@ -392,9 +389,9 @@ static inline ss_size_t ss_truncate(StackString *ss, ss_size_t new_length)
  *
  * @param ss Pointer to the StackString.
  *
- * @return ss_size_t The number of characters in the string.
+ * @return uint32_t The number of characters in the string.
  */
-static inline ss_size_t ss_length(const StackString *ss)
+static inline uint32_t ss_length(const StackString *ss)
 {
     return ss->string_length;
 }
@@ -413,7 +410,7 @@ static inline void ss_reverse(StackString *ss)
     {
         return;
     }
-    ss_size_t i = 0, j = ss->string_length - 1;
+    uint32_t i = 0, j = ss->string_length - 1;
     while (i < j)
     {
         char temp = ss->stack_string[i];
@@ -437,7 +434,7 @@ static inline void ss_reverse(StackString *ss)
 static inline void ss_copy(StackString *ss1, const StackString *ss2)
 {
     ss1->string_length = ss2->string_length;
-    for (ss_size_t i = 0; i < ss1->string_length; i++)
+    for (uint32_t i = 0; i < ss1->string_length; i++)
     {
         ss1->stack_string[i] = ss2->stack_string[i];
     }
@@ -451,12 +448,12 @@ static inline void ss_copy(StackString *ss1, const StackString *ss2)
  * character ('a' to 'z') to its uppercase equivalent ('A' to 'Z').
  *
  * @param ss Pointer to the StackString to modify.
- * @return ss_size_t The number of characters that were converted.
+ * @return uint32_t The number of characters that were converted.
  */
-static inline ss_size_t ss_to_uppercase(StackString *ss)
+static inline uint32_t ss_to_uppercase(StackString *ss)
 {
-    ss_size_t count = 0;
-    for (ss_size_t i = 0; i < ss->string_length; i++)
+    uint32_t count = 0;
+    for (uint32_t i = 0; i < ss->string_length; i++)
     {
         if (ss->stack_string[i] >= 'a' && ss->stack_string[i] <= 'z')
         {
@@ -474,12 +471,12 @@ static inline ss_size_t ss_to_uppercase(StackString *ss)
  * character ('A' to 'Z') to its lowercase equivalent ('a' to 'z').
  *
  * @param ss Pointer to the StackString to modify.
- * @return ss_size_t The number of characters that were converted.
+ * @return uint32_t The number of characters that were converted.
  */
-static inline ss_size_t ss_to_lowercase(StackString *ss)
+static inline uint32_t ss_to_lowercase(StackString *ss)
 {
-    ss_size_t count = 0;
-    for (ss_size_t i = 0; i < ss->string_length; i++)
+    uint32_t count = 0;
+    for (uint32_t i = 0; i < ss->string_length; i++)
     {
         if (ss->stack_string[i] >= 'A' && ss->stack_string[i] <= 'Z')
         {
