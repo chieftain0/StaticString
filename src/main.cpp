@@ -61,6 +61,10 @@ int main()
     ss_to_lowercase(&s1);
     print_stack_string(s1, "After ss_to_lowercase");
 
+    // Reverse
+    ss_reverse(&s1);
+    print_stack_string(s1, "After ss_reverse");
+
     getchar();
 
     return 0;
