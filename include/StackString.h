@@ -4,7 +4,7 @@
 #include <stdint.h>
 
 #ifndef SS_SIZE_TYPE
-#define SS_SIZE_TYPE uint32_t // decides how many characters can be stored (default: uint32_t)
+#define SS_SIZE_TYPE uint16_t // decides how many characters can be stored (default: uint16_t)
 #endif
 
 typedef SS_SIZE_TYPE ss_size_t;
@@ -374,7 +374,7 @@ static inline char ss_pop(StackString *ss)
  */
 static inline ss_size_t ss_truncate(StackString *ss, ss_size_t new_length)
 {
-    if (new_length > ss->string_length)
+    if (new_length > ss->string_length || new_length > SS_MAX_LENGTH)
     {
         return 0;
     }
@@ -409,6 +409,10 @@ static inline ss_size_t ss_length(const StackString *ss)
  */
 static inline void ss_reverse(StackString *ss)
 {
+    if (ss->string_length == 0)
+    {
+        return;
+    }
     ss_size_t i = 0, j = ss->string_length - 1;
     while (i < j)
     {
