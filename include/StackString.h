@@ -103,7 +103,7 @@ static inline uint32_t ss_append(StackString *ss, const char character)
  * @param ss Pointer to the StackString to modify.
  * @param cstr Null-terminated C string to append.
  *
- * @return uint32_t 1 if the append succeeded, 0 if the input was NULL or no space remained.
+ * @return uint32_t The number of characters appended.
  */
 static inline uint32_t ss_append_cstr(StackString *ss, const char *cstr)
 {
@@ -112,14 +112,14 @@ static inline uint32_t ss_append_cstr(StackString *ss, const char *cstr)
         return 0;
     }
 
-    uint32_t i;
+    uint32_t i = 0;
     for (i = 0; i < (SS_MAX_LENGTH - ss->string_length) && cstr[i] != '\0'; i++)
     {
         ss->stack_string[ss->string_length + i] = cstr[i];
     }
     ss->stack_string[ss->string_length + i] = '\0';
     ss->string_length += i;
-    return 1;
+    return i;
 }
 
 /**
@@ -426,13 +426,19 @@ static inline void ss_reverse(StackString *ss)
  *
  * Performs a deep copy of the contents and string length from the source
  * StackString (`ss2`) to the destination StackString (`ss1`), including
- * null-termination.
+ * null-termination. Returns void if the source StackString (`ss2`) is too long.
  *
  * @param ss1 Pointer to the destination StackString.
  * @param ss2 Pointer to the source StackString.
+ *
+ * @return void
  */
 static inline void ss_copy(StackString *ss1, const StackString *ss2)
 {
+    if (ss2->string_length > SS_MAX_LENGTH)
+    {
+        return;
+    }
     ss1->string_length = ss2->string_length;
     for (uint32_t i = 0; i < ss1->string_length; i++)
     {
