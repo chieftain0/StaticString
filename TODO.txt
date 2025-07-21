@@ -28,7 +28,7 @@ ss_truncate(StackString *ss, uint16_t new_length) - DONE
 
 === Utility ===
 ss_length(const StackString *ss) - DONE
-ss_reverse(StackString *ss)
+ss_reverse(StackString *ss) - DONE
 ss_copy(StackString *dest, const StackString *src) - DONE
 ss_to_uppercase(StackString *ss) - DONE
 ss_to_lowercase(StackString *ss) - DONE
