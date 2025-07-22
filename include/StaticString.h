@@ -171,6 +171,12 @@ static inline uint32_t sstr_replace_all_chars(StaticString *sstr, char old_char,
     return count;
 }
 
+static inline uint32_t sstr_insert_char_at(StaticString *sstr, uint16_t index, char character) {}
+static inline uint32_t sstr_remove_at(StaticString *sstr, uint16_t index) {}
+static inline uint32_t sstr_remove_range(StaticString *sstr, uint16_t start, uint16_t end) {}
+static inline uint32_t sstr_substring(const StaticString *sstr_source, StaticString *sstr_dest, uint16_t start, uint16_t end) {}
+static inline uint32_t sstr_replace_substring(StaticString *sstr, const char *old_sub, const char *new_sub) {}
+
 /**
  * @brief Trims trailing whitespace characters from a StaticString.
  *
