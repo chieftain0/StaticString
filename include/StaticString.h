@@ -171,7 +171,38 @@ static inline uint32_t sstr_replace_all_chars(StaticString *sstr, char old_char,
     return count;
 }
 
-static inline uint32_t sstr_insert_char_at(StaticString *sstr, uint16_t index, char character) {}
+/**
+ * @brief Inserts a single character into a StaticString at a given index.
+ *
+ * Shifts all characters at and after the given index to the right by one position
+ * and inserts the given character at the specified index. If the index is greater
+ * than the current string length, the character is not inserted.
+ *
+ * @param sstr Pointer to the StaticString to modify.
+ * @param index Zero-based index where the character should be inserted.
+ * @param character The character to insert.
+ *
+ * @return uint32_t The new length of the string, or 0 if the index was out of bounds.
+ */
+static inline uint32_t sstr_insert_char_at(StaticString *sstr, uint16_t index, char character)
+{
+    if (index > sstr->string_length || sstr->string_length >= SSTR_MAX_LENGTH)
+    {
+        return 0;
+    }
+
+    for (uint32_t i = sstr->string_length; i > index; --i)
+    {
+        sstr->static_string[i] = sstr->static_string[i - 1];
+    }
+
+    sstr->static_string[index] = character;
+    sstr->string_length++;
+    sstr->static_string[sstr->string_length] = '\0';
+
+    return sstr->string_length;
+}
+
 static inline uint32_t sstr_remove_at(StaticString *sstr, uint16_t index) {}
 static inline uint32_t sstr_remove_range(StaticString *sstr, uint16_t start, uint16_t end) {}
 static inline uint32_t sstr_substring(const StaticString *sstr_source, StaticString *sstr_dest, uint16_t start, uint16_t end) {}
