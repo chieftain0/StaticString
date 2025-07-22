@@ -5,9 +5,9 @@
 
 using namespace std;
 
-void print_static_string(const StaticString &ss, const char *label)
+void print_static_string(const StaticString &sstr, const char *label)
 {
-    cout << label << ": \"" << sstr_to_cstr(&ss) << "\" (len=" << (int)ss.string_length << ")\n";
+    cout << label << ": \"" << sstr_to_cstr(&sstr) << "\" (len=" << (int)sstr_length(&sstr) << ")\n";
 }
 
 int main()

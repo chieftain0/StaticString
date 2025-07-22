@@ -1,34 +1,44 @@
 === Core Initialization ===
-sstr_init(StaticString *ss) - DONE
-sstr_from_cstr(StaticString *ss, const char *cstr) - DONE
-sstr_clear(StaticString *ss) - DONE
+sstr_init(StaticString *sstr) - DONE
+sstr_from_cstr(StaticString *sstr, const char *cstr) - DONE
+sstr_clear(StaticString *sstr) - DONE
 
 === Append / Modify ===
-sstr_append(StaticString *ss, char character) - DONE
-sstr_append_cstr(StaticString *ss, const char *cstr) - DONE
-sstr_replace_char_from_index(StaticString *ss, uint16_t index, char character) - DONE
-sstr_replace_all_chars(StaticString *ss, char old_char, char new_char) - DONE
+sstr_append(StaticString *sstr, char character) - DONE
+sstr_append_cstr(StaticString *sstr, const char *cstr) - DONE
+sstr_replace_char_from_index(StaticString *sstr, uint16_t index, char character) - DONE
+sstr_replace_all_chars(StaticString *sstr, char old_char, char new_char) - DONE
+sstr_replace_substring(StaticString *sstr, const char *old_sub, const char *new_sub)
+sstr_insert_char_at(StaticString *sstr, uint16_t index, char character)
+sstr_remove_at(StaticString *sstr, uint16_t index)
+sstr_remove_range(StaticString *sstr, uint16_t start, uint16_t end)
+sstr_substring(const StaticString *sstr_source, StaticString *sstr_dest, uint16_t start, uint16_t end)
 
 === Trim & Whitespace ===
-sstr_trim_leading(StaticString *ss) - DONE
-sstr_trim_trailing(StaticString *ss) - DONE
-sstr_trim(StaticString *ss) - DONE
-sstr_strip_all_whitespace(StaticString *ss) - DONE
+sstr_trim_leading(StaticString *sstr) - DONE
+sstr_trim_trailing(StaticString *sstr) - DONE
+sstr_trim(StaticString *sstr) - DONE
+sstr_strip_all_whitespace(StaticString *sstr) - DONE
 
 === Compare / Check ===
-sstr_equals(const StaticString *ss1, const StaticString *ss2) - DONE
-sstr_equals_cstr(const StaticString *ss, const char *cstr) - DONE
+sstr_equals(const StaticString *sstr1, const StaticString *sstr2) - DONE
+sstr_equals_cstr(const StaticString *sstr, const char *cstr) - DONE
 
 === Read / Access ===
-sstr_to_cstr(const StaticString *ss) - DONE
+sstr_to_cstr(const StaticString *sstr) - DONE
 
 === Removal / Truncate ===
-sstr_pop(StaticString *ss) - DONE
-sstr_truncate(StaticString *ss, uint16_t new_length) - DONE
+sstr_pop(StaticString *sstr) - DONE
+sstr_truncate(StaticString *sstr, uint16_t new_length) - DONE
 
 === Utility ===
-sstr_length(const StaticString *ss) - DONE
-sstr_reverse(StaticString *ss) - DONE
+sstr_length(const StaticString *sstr) - DONE
+sstr_reverse(StaticString *sstr) - DONE
 sstr_copy(StaticString *dest, const StaticString *src) - DONE
-sstr_to_uppercase(StaticString *ss) - DONE
-sstr_to_lowercase(StaticString *ss) - DONE
+sstr_to_uppercase(StaticString *sstr) - DONE
+sstr_to_lowercase(StaticString *sstr) - DONE
+
+=== Search ===
+sstr_contains(const StaticString *sstr, char ch) - DONE
+sstr_first_index_of(const StaticString *sstr, char ch) - DONE
+sstr_last_index_of(const StaticString *sstr, char ch) - DONE
