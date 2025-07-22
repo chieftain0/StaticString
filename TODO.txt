@@ -1,34 +1,34 @@
 === Core Initialization ===
-ss_init(StackString *ss) - DONE
-ss_from_cstr(StackString *ss, const char *cstr) - DONE
-ss_clear(StackString *ss) - DONE
+sstr_init(StaticString *ss) - DONE
+sstr_from_cstr(StaticString *ss, const char *cstr) - DONE
+sstr_clear(StaticString *ss) - DONE
 
 === Append / Modify ===
-ss_append(StackString *ss, char character) - DONE
-ss_append_cstr(StackString *ss, const char *cstr) - DONE
-ss_replace_char_from_index(StackString *ss, uint16_t index, char character) - DONE
-ss_replace_all_chars(StackString *ss, char old_char, char new_char) - DONE
+sstr_append(StaticString *ss, char character) - DONE
+sstr_append_cstr(StaticString *ss, const char *cstr) - DONE
+sstr_replace_char_from_index(StaticString *ss, uint16_t index, char character) - DONE
+sstr_replace_all_chars(StaticString *ss, char old_char, char new_char) - DONE
 
 === Trim & Whitespace ===
-ss_trim_leading(StackString *ss) - DONE
-ss_trim_trailing(StackString *ss) - DONE
-ss_trim(StackString *ss) - DONE
-ss_strip_all_whitespace(StackString *ss) - DONE
+sstr_trim_leading(StaticString *ss) - DONE
+sstr_trim_trailing(StaticString *ss) - DONE
+sstr_trim(StaticString *ss) - DONE
+sstr_strip_all_whitespace(StaticString *ss) - DONE
 
 === Compare / Check ===
-ss_equals(const StackString *ss1, const StackString *ss2) - DONE
-ss_equals_cstr(const StackString *ss, const char *cstr) - DONE
+sstr_equals(const StaticString *ss1, const StaticString *ss2) - DONE
+sstr_equals_cstr(const StaticString *ss, const char *cstr) - DONE
 
 === Read / Access ===
-ss_to_cstr(const StackString *ss) - DONE
+sstr_to_cstr(const StaticString *ss) - DONE
 
 === Removal / Truncate ===
-ss_pop(StackString *ss) - DONE
-ss_truncate(StackString *ss, uint16_t new_length) - DONE
+sstr_pop(StaticString *ss) - DONE
+sstr_truncate(StaticString *ss, uint16_t new_length) - DONE
 
 === Utility ===
-ss_length(const StackString *ss) - DONE
-ss_reverse(StackString *ss) - DONE
-ss_copy(StackString *dest, const StackString *src) - DONE
-ss_to_uppercase(StackString *ss) - DONE
-ss_to_lowercase(StackString *ss) - DONE
+sstr_length(const StaticString *ss) - DONE
+sstr_reverse(StaticString *ss) - DONE
+sstr_copy(StaticString *dest, const StaticString *src) - DONE
+sstr_to_uppercase(StaticString *ss) - DONE
+sstr_to_lowercase(StaticString *ss) - DONE
