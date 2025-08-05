@@ -11,8 +11,7 @@ sstr_replace_all_chars(StaticString *sstr, char old_char, char new_char) - DONE
 sstr_insert_char_at(StaticString *sstr, uint16_t index, char character) - DONE
 sstr_remove_at(StaticString *sstr, uint16_t index) - DONE
 sstr_remove_range(StaticString *sstr, uint16_t start, uint16_t end) - DONE
-sstr_substring(const StaticString *sstr_source, StaticString *sstr_dest, uint16_t start, uint16_t end)
-sstr_replace_substring(StaticString *sstr, const char *old_sub, const char *new_sub)
+sstr_substring(const StaticString *sstr_source, StaticString *sstr_dest, uint16_t start, uint16_t end) - DONE
 
 === Trim & Whitespace ===
 sstr_trim_leading(StaticString *sstr) - DONE

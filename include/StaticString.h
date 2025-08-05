@@ -263,8 +263,38 @@ static inline uint32_t sstr_remove_range(StaticString *sstr, uint16_t start, uin
     return sstr->string_length;
 }
 
-static inline uint32_t sstr_substring(const StaticString *sstr_source, StaticString *sstr_dest, uint16_t start, uint16_t end) {}
-static inline uint32_t sstr_replace_substring(StaticString *sstr, const char *old_sub, const char *new_sub) {}
+/**
+ * @brief Copies a substring from one StaticString to another.
+ *
+ * Copies a range of characters from the source StaticString to the destination
+ * StaticString. The range is specified by the start and end indices, which
+ * are zero-based and inclusive. The function returns 1 if the operation is
+ * successful, or 0 if the start index is greater than the current string
+ * length, the end index is greater than the current string length, or the
+ * start index is greater than the end index.
+ *
+ * @param sstr_source Pointer to the source StaticString.
+ * @param sstr_dest Pointer to the destination StaticString.
+ * @param start Zero-based index of the first character to copy.
+ * @param end Zero-based index of the last character to copy.
+ *
+ * @return uint8_t 1 if the operation is successful, 0 if the indices are invalid.
+ */
+static inline uint8_t sstr_substring(const StaticString *sstr_source, StaticString *sstr_dest, uint16_t start, uint16_t end)
+{
+    if (start >= sstr_source->string_length || end >= sstr_source->string_length || start > end)
+    {
+        return 0;
+    }
+
+    sstr_dest->string_length = end - start + 1;
+    for (uint16_t i = 0; i < sstr_dest->string_length; i++)
+    {
+        sstr_dest->static_string[i] = sstr_source->static_string[start + i];
+    }
+    sstr_dest->static_string[sstr_dest->string_length] = '\0';
+    return 1;
+}
 
 /**
  * @brief Trims trailing whitespace characters from a StaticString.
