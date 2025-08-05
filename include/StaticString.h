@@ -203,7 +203,34 @@ static inline uint32_t sstr_insert_char_at(StaticString *sstr, uint16_t index, c
     return sstr->string_length;
 }
 
-static inline uint32_t sstr_remove_at(StaticString *sstr, uint16_t index) {}
+/**
+ * @brief Removes a single character from a StaticString at a given index.
+ *
+ * Shifts all characters at and after the given index to the left by one position
+ * and removes the character at the specified index. If the index is greater
+ * than the current string length, the function does not modify the string.
+ *
+ * @param sstr Pointer to the StaticString to modify.
+ * @param index Zero-based index of the character to remove.
+ *
+ * @return uint32_t The new length of the string.
+ */
+static inline uint32_t sstr_remove_at(StaticString *sstr, uint16_t index)
+{
+    if (index >= sstr->string_length)
+    {
+        return sstr->string_length;
+    }
+
+    for (int i = index; i < sstr->string_length - 1; i++)
+    {
+        sstr->static_string[i] = sstr->static_string[i + 1];
+    }
+    sstr->static_string[sstr->string_length - 1] = '\0';
+    sstr->string_length--;
+    return sstr->string_length;
+}
+
 static inline uint32_t sstr_remove_range(StaticString *sstr, uint16_t start, uint16_t end) {}
 static inline uint32_t sstr_substring(const StaticString *sstr_source, StaticString *sstr_dest, uint16_t start, uint16_t end) {}
 static inline uint32_t sstr_replace_substring(StaticString *sstr, const char *old_sub, const char *new_sub) {}
