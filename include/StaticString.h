@@ -231,7 +231,38 @@ static inline uint32_t sstr_remove_at(StaticString *sstr, uint16_t index)
     return sstr->string_length;
 }
 
-static inline uint32_t sstr_remove_range(StaticString *sstr, uint16_t start, uint16_t end) {}
+/**
+ * @brief Removes a range of characters from a StaticString.
+ *
+ * Shifts all characters at and after the given start index to the left by the
+ * given range length and removes the characters at the specified range.
+ * If the start index is greater than the current string length, the function
+ * does not modify the string.
+ *
+ * @param sstr Pointer to the StaticString to modify.
+ * @param start Zero-based index of the first character to remove.
+ * @param end Zero-based index of the last character to remove.
+ *
+ * @return uint32_t The new length of the string.
+ */
+static inline uint32_t sstr_remove_range(StaticString *sstr, uint16_t start, uint16_t end)
+{
+    if (start >= sstr->string_length || end >= sstr->string_length || start > end)
+    {
+        return sstr->string_length;
+    }
+
+    for (uint16_t i = end + 1; i < sstr->string_length; i++)
+    {
+        sstr->static_string[i - (end - start + 1)] = sstr->static_string[i];
+    }
+
+    sstr->string_length = sstr->string_length - (end - start + 1);
+    sstr->static_string[sstr->string_length] = '\0';
+
+    return sstr->string_length;
+}
+
 static inline uint32_t sstr_substring(const StaticString *sstr_source, StaticString *sstr_dest, uint16_t start, uint16_t end) {}
 static inline uint32_t sstr_replace_substring(StaticString *sstr, const char *old_sub, const char *new_sub) {}
 
