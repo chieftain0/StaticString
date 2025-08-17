@@ -24,7 +24,7 @@ typedef struct
  *
  * @return void
  */
-static inline void sstr_init(StaticString *sstr)
+inline void sstr_init(StaticString *sstr)
 {
     sstr->string_length = 0;
     sstr->static_string[0] = '\0';
@@ -41,7 +41,7 @@ static inline void sstr_init(StaticString *sstr)
  *
  * @return void
  */
-static inline void sstr_from_cstr(StaticString *sstr, const char *cstr)
+inline void sstr_from_cstr(StaticString *sstr, const char *cstr)
 {
     uint32_t i;
     for (i = 0; i < SSTR_MAX_LENGTH && cstr[i] != '\0'; i++)
@@ -61,7 +61,7 @@ static inline void sstr_from_cstr(StaticString *sstr, const char *cstr)
  *
  * @return void
  */
-static inline void sstr_clear(StaticString *sstr)
+inline void sstr_clear(StaticString *sstr)
 {
     for (uint32_t i = 0; i <= SSTR_MAX_LENGTH; i++)
     {
@@ -81,7 +81,7 @@ static inline void sstr_clear(StaticString *sstr)
  *
  * @return uint32_t 1 if the character was appended, 0 if the string was full.
  */
-static inline uint32_t sstr_append(StaticString *sstr, const char character)
+inline uint32_t sstr_append(StaticString *sstr, const char character)
 {
     if (sstr->string_length < SSTR_MAX_LENGTH)
     {
@@ -105,7 +105,7 @@ static inline uint32_t sstr_append(StaticString *sstr, const char character)
  *
  * @return uint32_t The number of characters appended.
  */
-static inline uint32_t sstr_append_cstr(StaticString *sstr, const char *cstr)
+inline uint32_t sstr_append_cstr(StaticString *sstr, const char *cstr)
 {
     if (cstr == NULL || sstr->string_length >= SSTR_MAX_LENGTH)
     {
@@ -134,7 +134,7 @@ static inline uint32_t sstr_append_cstr(StaticString *sstr, const char *cstr)
  *
  * @return uint32_t 1 if the replacement was successful, 0 if the index was out of bounds.
  */
-static inline uint32_t sstr_replace_char_from_index(StaticString *sstr, uint32_t index, char character)
+inline uint32_t sstr_replace_char_from_index(StaticString *sstr, uint32_t index, char character)
 {
     if (index >= sstr->string_length)
     {
@@ -157,7 +157,7 @@ static inline uint32_t sstr_replace_char_from_index(StaticString *sstr, uint32_t
  *
  * @return uint32_t The number of characters replaced.
  */
-static inline uint32_t sstr_replace_all_chars(StaticString *sstr, char old_char, char new_char)
+inline uint32_t sstr_replace_all_chars(StaticString *sstr, char old_char, char new_char)
 {
     uint32_t count = 0;
     for (uint32_t i = 0; i < sstr->string_length; i++)
@@ -184,7 +184,7 @@ static inline uint32_t sstr_replace_all_chars(StaticString *sstr, char old_char,
  *
  * @return uint32_t The new length of the string, or 0 if the index was out of bounds.
  */
-static inline uint32_t sstr_insert_char_at(StaticString *sstr, uint16_t index, char character)
+inline uint32_t sstr_insert_char_at(StaticString *sstr, uint16_t index, char character)
 {
     if (index > sstr->string_length || sstr->string_length >= SSTR_MAX_LENGTH)
     {
@@ -215,7 +215,7 @@ static inline uint32_t sstr_insert_char_at(StaticString *sstr, uint16_t index, c
  *
  * @return uint32_t The new length of the string.
  */
-static inline uint32_t sstr_remove_at(StaticString *sstr, uint16_t index)
+inline uint32_t sstr_remove_at(StaticString *sstr, uint16_t index)
 {
     if (index >= sstr->string_length)
     {
@@ -245,7 +245,7 @@ static inline uint32_t sstr_remove_at(StaticString *sstr, uint16_t index)
  *
  * @return uint32_t The new length of the string.
  */
-static inline uint32_t sstr_remove_range(StaticString *sstr, uint16_t start, uint16_t end)
+inline uint32_t sstr_remove_range(StaticString *sstr, uint16_t start, uint16_t end)
 {
     if (start >= sstr->string_length || end >= sstr->string_length || start > end)
     {
@@ -280,7 +280,7 @@ static inline uint32_t sstr_remove_range(StaticString *sstr, uint16_t start, uin
  *
  * @return uint8_t 1 if the operation is successful, 0 if the indices are invalid.
  */
-static inline uint8_t sstr_substring(const StaticString *sstr_source, StaticString *sstr_dest, uint16_t start, uint16_t end)
+inline uint8_t sstr_substring(const StaticString *sstr_source, StaticString *sstr_dest, uint16_t start, uint16_t end)
 {
     if (start >= sstr_source->string_length || end >= sstr_source->string_length || start > end)
     {
@@ -306,7 +306,7 @@ static inline uint8_t sstr_substring(const StaticString *sstr_source, StaticStri
  *
  * @return uint32_t The number of characters trimmed from the end.
  */
-static inline uint32_t sstr_trim_trailing(StaticString *sstr)
+inline uint32_t sstr_trim_trailing(StaticString *sstr)
 {
     uint32_t count = 0;
     while (sstr->string_length > 0 && IS_WHITESPACE(sstr->static_string[sstr->string_length - 1]))
@@ -328,7 +328,7 @@ static inline uint32_t sstr_trim_trailing(StaticString *sstr)
  *
  * @return uint32_t The number of characters removed from the beginning.
  */
-static inline uint32_t sstr_trim_leading(StaticString *sstr)
+inline uint32_t sstr_trim_leading(StaticString *sstr)
 {
     uint32_t offset = 0;
 
@@ -359,7 +359,7 @@ static inline uint32_t sstr_trim_leading(StaticString *sstr)
  *
  * @return uint32_t The total number of characters removed.
  */
-static inline uint32_t sstr_trim(StaticString *sstr)
+inline uint32_t sstr_trim(StaticString *sstr)
 {
     uint32_t count = 0;
     count += sstr_trim_leading(sstr);
@@ -376,7 +376,7 @@ static inline uint32_t sstr_trim(StaticString *sstr)
  *
  * @return void
  */
-static inline void sstr_strip_all_whitespace(StaticString *sstr)
+inline void sstr_strip_all_whitespace(StaticString *sstr)
 {
     uint32_t write = 0;
     for (uint32_t read = 0; read < sstr->string_length; read++)
@@ -400,7 +400,7 @@ static inline void sstr_strip_all_whitespace(StaticString *sstr)
  *
  * @return uint32_t 1 if the strings are equal, 0 otherwise.
  */
-static inline uint32_t sstr_equals(const StaticString *sstr1, const StaticString *sstr2)
+inline uint32_t sstr_equals(const StaticString *sstr1, const StaticString *sstr2)
 {
     if (sstr1->string_length != sstr2->string_length)
         return 0;
@@ -425,7 +425,7 @@ static inline uint32_t sstr_equals(const StaticString *sstr1, const StaticString
  *
  * @return uint32_t 1 if the strings are equal, 0 otherwise.
  */
-static inline uint32_t sstr_equals_cstr(const StaticString *sstr, const char *cstr)
+inline uint32_t sstr_equals_cstr(const StaticString *sstr, const char *cstr)
 {
     if (cstr == NULL)
     {
@@ -455,7 +455,7 @@ static inline uint32_t sstr_equals_cstr(const StaticString *sstr, const char *cs
  *
  * @return const char* Pointer to the null-terminated C string.
  */
-static inline const char *sstr_to_cstr(const StaticString *sstr)
+inline const char *sstr_to_cstr(const StaticString *sstr)
 {
     return sstr->static_string;
 }
@@ -471,7 +471,7 @@ static inline const char *sstr_to_cstr(const StaticString *sstr)
  *
  * @return char The last character if available, otherwise 0.
  */
-static inline char sstr_pop(StaticString *sstr)
+inline char sstr_pop(StaticString *sstr)
 {
     char return_char = 0;
     if (sstr->string_length > 0)
@@ -494,7 +494,7 @@ static inline char sstr_pop(StaticString *sstr)
  *
  * @return uint32_t 1 if the truncation was successful, 0 if new_length is greater than current length.
  */
-static inline uint32_t sstr_truncate(StaticString *sstr, uint32_t new_length)
+inline uint32_t sstr_truncate(StaticString *sstr, uint32_t new_length)
 {
     if (new_length > sstr->string_length || new_length > SSTR_MAX_LENGTH)
     {
@@ -516,7 +516,7 @@ static inline uint32_t sstr_truncate(StaticString *sstr, uint32_t new_length)
  *
  * @return uint32_t The number of characters in the string.
  */
-static inline uint32_t sstr_length(const StaticString *sstr)
+inline uint32_t sstr_length(const StaticString *sstr)
 {
     return sstr->string_length;
 }
@@ -529,7 +529,7 @@ static inline uint32_t sstr_length(const StaticString *sstr)
  *
  * @param sstr Pointer to the StaticString to be reversed.
  */
-static inline void sstr_reverse(StaticString *sstr)
+inline void sstr_reverse(StaticString *sstr)
 {
     if (sstr->string_length == 0)
     {
@@ -558,7 +558,7 @@ static inline void sstr_reverse(StaticString *sstr)
  *
  * @return void
  */
-static inline void sstr_copy(StaticString *sstr1, const StaticString *sstr2)
+inline void sstr_copy(StaticString *sstr1, const StaticString *sstr2)
 {
     if (sstr2->string_length > SSTR_MAX_LENGTH)
     {
@@ -582,7 +582,7 @@ static inline void sstr_copy(StaticString *sstr1, const StaticString *sstr2)
  *
  * @return uint32_t The number of characters that were converted.
  */
-static inline uint32_t sstr_to_uppercase(StaticString *sstr)
+inline uint32_t sstr_to_uppercase(StaticString *sstr)
 {
     uint32_t count = 0;
     for (uint32_t i = 0; i < sstr->string_length; i++)
@@ -606,7 +606,7 @@ static inline uint32_t sstr_to_uppercase(StaticString *sstr)
  *
  * @return uint32_t The number of characters that were converted.
  */
-static inline uint32_t sstr_to_lowercase(StaticString *sstr)
+inline uint32_t sstr_to_lowercase(StaticString *sstr)
 {
     uint32_t count = 0;
     for (uint32_t i = 0; i < sstr->string_length; i++)
@@ -631,7 +631,7 @@ static inline uint32_t sstr_to_lowercase(StaticString *sstr)
  *
  * @return uint32_t The number of times the character appears in the string.
  */
-static inline uint32_t sstr_contains(const StaticString *sstr, char ch)
+inline uint32_t sstr_contains(const StaticString *sstr, char ch)
 {
     uint32_t count = 0;
     for (uint32_t i = 0; i < sstr->string_length; i++)
@@ -656,7 +656,7 @@ static inline uint32_t sstr_contains(const StaticString *sstr, char ch)
  *
  * @return int The index of the first occurrence of the character, or -1 if not found.
  */
-static inline int sstr_first_index_of(const StaticString *sstr, char ch)
+inline int sstr_first_index_of(const StaticString *sstr, char ch)
 {
     for (uint32_t i = 0; i < sstr->string_length; i++)
     {
@@ -680,7 +680,7 @@ static inline int sstr_first_index_of(const StaticString *sstr, char ch)
  *
  * @return int The index of the last occurrence of the character, or -1 if not found.
  */
-static inline int sstr_last_index_of(const StaticString *sstr, char ch)
+inline int sstr_last_index_of(const StaticString *sstr, char ch)
 {
     for (uint32_t i = sstr->string_length - 1; i >= 0; i--)
     {
