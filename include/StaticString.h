@@ -4,15 +4,15 @@
 #include <stdint.h>
 
 #ifndef SSTR_MAX_LENGTH
-#define SSTR_MAX_LENGTH ((uint8_t)(-1)) // Maximum length of a StaticString excluding the null terminator
+#define SSTR_MAX_LENGTH ((uint32_t)(-1)) // Maximum length of a StaticString excluding the null terminator
 #endif
 
 #define IS_WHITESPACE(c) ((c) == ' ' || (c) == '\t' || (c) == '\n' || (c) == '\r')
 
 typedef struct
 {
-    char static_string[SSTR_MAX_LENGTH + 1];
-    uint32_t string_length;
+    char static_string[SSTR_MAX_LENGTH + 1]; // char array + null terminator
+    uint32_t string_length;                  // Number of characters in the string (excluding the null terminator)
 } StaticString;
 
 /**
@@ -22,12 +22,22 @@ typedef struct
  *
  * @param sstr Pointer to the StaticString to initialize.
  *
- * @return void
+ * @warning This function does not clear the internal character buffer.
+ *
+ * @return uint32_t 1 if the StaticString was successfully initialized, 0 otherwise.
  */
-inline void sstr_init(StaticString *sstr)
+inline uint32_t sstr_init(StaticString *sstr)
 {
-    sstr->string_length = 0;
-    sstr->static_string[0] = '\0';
+    if (sstr == NULL)
+    {
+        return 0;
+    }
+    else
+    {
+        sstr->string_length = 0;
+        sstr->static_string[0] = '\0';
+    }
+    return 1;
 }
 
 /**
@@ -39,10 +49,14 @@ inline void sstr_init(StaticString *sstr)
  * @param sstr Pointer to the StaticString to initialize.
  * @param cstr Null-terminated C string to copy from.
  *
- * @return void
+ * @return uint32_t 1 if the StaticString was successfully initialized, 0 otherwise.
  */
-inline void sstr_from_cstr(StaticString *sstr, const char *cstr)
+inline uint32_t sstr_from_cstr(StaticString *sstr, const char *cstr)
 {
+    if (cstr == NULL || sstr == NULL)
+    {
+        return 0;
+    }
     uint32_t i;
     for (i = 0; i < SSTR_MAX_LENGTH && cstr[i] != '\0'; i++)
     {
@@ -50,6 +64,7 @@ inline void sstr_from_cstr(StaticString *sstr, const char *cstr)
     }
     sstr->static_string[i] = '\0';
     sstr->string_length = i;
+    return 1;
 }
 
 /**
@@ -59,15 +74,20 @@ inline void sstr_from_cstr(StaticString *sstr, const char *cstr)
  *
  * @param sstr Pointer to the StaticString to clear.
  *
- * @return void
+ * @return uint32_t 1 if the StaticString was successfully cleared, 0 otherwise.
  */
-inline void sstr_clear(StaticString *sstr)
+inline uint32_t sstr_clear(StaticString *sstr)
 {
+    if (sstr == NULL)
+    {
+        return 0;
+    }
     for (uint32_t i = 0; i <= SSTR_MAX_LENGTH; i++)
     {
         sstr->static_string[i] = '\0';
     }
     sstr->string_length = 0;
+    return 1;
 }
 
 /**
@@ -83,6 +103,10 @@ inline void sstr_clear(StaticString *sstr)
  */
 inline uint32_t sstr_append(StaticString *sstr, const char character)
 {
+    if (sstr == NULL)
+    {
+        return 0;
+    }
     if (sstr->string_length < SSTR_MAX_LENGTH)
     {
         sstr->static_string[sstr->string_length] = character;
@@ -132,11 +156,17 @@ inline uint32_t sstr_append_cstr(StaticString *sstr, const char *cstr)
  * @param index Zero-based index of the character to replace.
  * @param character The new character to write at the specified index.
  *
- * @return uint32_t 1 if the replacement was successful, 0 if the index was out of bounds.
+ * @warning This function does not allow null characters.
+ *
+ * @return uint32_t 1 if the replacement was successful, 0 if otherwise.
  */
 inline uint32_t sstr_replace_char_from_index(StaticString *sstr, uint32_t index, char character)
 {
-    if (index >= sstr->string_length)
+    if (sstr == NULL)
+    {
+        return 0;
+    }
+    if (index >= sstr->string_length || index >= SSTR_MAX_LENGTH || character == '\0')
     {
         return 0;
     }
@@ -159,6 +189,10 @@ inline uint32_t sstr_replace_char_from_index(StaticString *sstr, uint32_t index,
  */
 inline uint32_t sstr_replace_all_chars(StaticString *sstr, char old_char, char new_char)
 {
+    if (sstr == NULL)
+    {
+        return 0;
+    }
     uint32_t count = 0;
     for (uint32_t i = 0; i < sstr->string_length; i++)
     {
@@ -186,6 +220,10 @@ inline uint32_t sstr_replace_all_chars(StaticString *sstr, char old_char, char n
  */
 inline uint32_t sstr_insert_char_at(StaticString *sstr, uint32_t index, char character)
 {
+    if (sstr == NULL)
+    {
+        return 0;
+    }
     if (index > sstr->string_length || sstr->string_length >= SSTR_MAX_LENGTH)
     {
         return 0;
@@ -217,6 +255,10 @@ inline uint32_t sstr_insert_char_at(StaticString *sstr, uint32_t index, char cha
  */
 inline uint32_t sstr_remove_at(StaticString *sstr, uint32_t index)
 {
+    if (sstr == NULL)
+    {
+        return 0;
+    }
     if (index >= sstr->string_length)
     {
         return sstr->string_length;
@@ -247,6 +289,10 @@ inline uint32_t sstr_remove_at(StaticString *sstr, uint32_t index)
  */
 inline uint32_t sstr_remove_range(StaticString *sstr, uint32_t start, uint32_t end)
 {
+    if (sstr == NULL)
+    {
+        return 0;
+    }
     if (start >= sstr->string_length || end >= sstr->string_length || start > end)
     {
         return sstr->string_length;
@@ -278,10 +324,14 @@ inline uint32_t sstr_remove_range(StaticString *sstr, uint32_t start, uint32_t e
  * @param start Zero-based index of the first character to copy.
  * @param end Zero-based index of the last character to copy.
  *
- * @return uint8_t 1 if the operation is successful, 0 if the indices are invalid.
+ * @return uint32_t 1 if the operation is successful, 0 if the indices are invalid.
  */
-inline uint8_t sstr_substring(const StaticString *sstr_source, StaticString *sstr_dest, uint32_t start, uint32_t end)
+inline uint32_t sstr_substring(const StaticString *sstr_source, StaticString *sstr_dest, uint32_t start, uint32_t end)
 {
+    if (sstr_source == NULL || sstr_dest == NULL)
+    {
+        return 0;
+    }
     if (start >= sstr_source->string_length || end >= sstr_source->string_length || start > end)
     {
         return 0;
@@ -308,6 +358,10 @@ inline uint8_t sstr_substring(const StaticString *sstr_source, StaticString *sst
  */
 inline uint32_t sstr_trim_trailing(StaticString *sstr)
 {
+    if (sstr == NULL)
+    {
+        return 0;
+    }
     uint32_t count = 0;
     while (sstr->string_length > 0 && IS_WHITESPACE(sstr->static_string[sstr->string_length - 1]))
     {
@@ -330,8 +384,12 @@ inline uint32_t sstr_trim_trailing(StaticString *sstr)
  */
 inline uint32_t sstr_trim_leading(StaticString *sstr)
 {
-    uint32_t offset = 0;
+    if (sstr == NULL)
+    {
+        return 0;
+    }
 
+    uint32_t offset = 0;
     while (offset < sstr->string_length && IS_WHITESPACE(sstr->static_string[offset]))
     {
         offset++;
@@ -361,6 +419,10 @@ inline uint32_t sstr_trim_leading(StaticString *sstr)
  */
 inline uint32_t sstr_trim(StaticString *sstr)
 {
+    if (sstr == NULL)
+    {
+        return 0;
+    }
     uint32_t count = 0;
     count += sstr_trim_leading(sstr);
     count += sstr_trim_trailing(sstr);
@@ -374,9 +436,9 @@ inline uint32_t sstr_trim(StaticString *sstr)
  *
  * @param sstr Pointer to the StaticString to modify.
  *
- * @return void
+ * @return uint32_t The number of characters removed.
  */
-inline void sstr_strip_all_whitespace(StaticString *sstr)
+inline uint32_t sstr_strip_all_whitespace(StaticString *sstr)
 {
     uint32_t write = 0;
     for (uint32_t read = 0; read < sstr->string_length; read++)
@@ -387,7 +449,9 @@ inline void sstr_strip_all_whitespace(StaticString *sstr)
         }
     }
     sstr->static_string[write] = '\0';
+    uint32_t removed = sstr->string_length - write;
     sstr->string_length = write;
+    return removed;
 }
 
 /**
@@ -402,13 +466,21 @@ inline void sstr_strip_all_whitespace(StaticString *sstr)
  */
 inline uint32_t sstr_equals(const StaticString *sstr1, const StaticString *sstr2)
 {
-    if (sstr1->string_length != sstr2->string_length)
+    if (sstr1 == NULL || sstr2 == NULL)
+    {
         return 0;
+    }
+    if (sstr1->string_length != sstr2->string_length)
+    {
+        return 0;
+    }
 
     for (uint32_t i = 0; i < sstr1->string_length; i++)
     {
         if (sstr1->static_string[i] != sstr2->static_string[i])
+        {
             return 0;
+        }
     }
 
     return 1;
@@ -457,6 +529,10 @@ inline uint32_t sstr_equals_cstr(const StaticString *sstr, const char *cstr)
  */
 inline const char *sstr_to_cstr(const StaticString *sstr)
 {
+    if (sstr == NULL)
+    {
+        return NULL;
+    }
     return sstr->static_string;
 }
 
@@ -473,6 +549,11 @@ inline const char *sstr_to_cstr(const StaticString *sstr)
  */
 inline char sstr_pop(StaticString *sstr)
 {
+    if (sstr == NULL)
+    {
+        return 0;
+    }
+
     char return_char = 0;
     if (sstr->string_length > 0)
     {
@@ -496,6 +577,11 @@ inline char sstr_pop(StaticString *sstr)
  */
 inline uint32_t sstr_truncate(StaticString *sstr, uint32_t new_length)
 {
+    if (sstr == NULL)
+    {
+        return 0;
+    }
+
     if (new_length > sstr->string_length || new_length > SSTR_MAX_LENGTH)
     {
         return 0;
@@ -528,12 +614,18 @@ inline uint32_t sstr_length(const StaticString *sstr)
  * additional memory. The operation is done in-place.
  *
  * @param sstr Pointer to the StaticString to be reversed.
+ *
+ * @return uint32_t 1 if the string was successfully reversed, 0 otherwise.
  */
-inline void sstr_reverse(StaticString *sstr)
+inline uint32_t sstr_reverse(StaticString *sstr)
 {
+    if (sstr == NULL)
+    {
+        return 0;
+    }
     if (sstr->string_length == 0)
     {
-        return;
+        return 0;
     }
     uint32_t i = 0, j = sstr->string_length - 1;
     while (i < j)
@@ -544,6 +636,7 @@ inline void sstr_reverse(StaticString *sstr)
         i++;
         j--;
     }
+    return 1;
 }
 
 /**
@@ -556,13 +649,17 @@ inline void sstr_reverse(StaticString *sstr)
  * @param sstr1 Pointer to the destination StaticString.
  * @param sstr2 Pointer to the source StaticString.
  *
- * @return void
+ * @return uint32_t 1 if the copy was successful, 0 if the source StaticString is too long.
  */
-inline void sstr_copy(StaticString *sstr1, const StaticString *sstr2)
+inline uint32_t sstr_copy(StaticString *sstr1, const StaticString *sstr2)
 {
+    if (sstr1 == NULL || sstr2 == NULL)
+    {
+        return 0;
+    }
     if (sstr2->string_length > SSTR_MAX_LENGTH)
     {
-        return;
+        return 0;
     }
     sstr1->string_length = sstr2->string_length;
     for (uint32_t i = 0; i < sstr1->string_length; i++)
@@ -570,6 +667,7 @@ inline void sstr_copy(StaticString *sstr1, const StaticString *sstr2)
         sstr1->static_string[i] = sstr2->static_string[i];
     }
     sstr1->static_string[sstr1->string_length] = '\0';
+    return 1;
 }
 
 /**
@@ -584,6 +682,10 @@ inline void sstr_copy(StaticString *sstr1, const StaticString *sstr2)
  */
 inline uint32_t sstr_to_uppercase(StaticString *sstr)
 {
+    if (sstr == NULL)
+    {
+        return 0;
+    }
     uint32_t count = 0;
     for (uint32_t i = 0; i < sstr->string_length; i++)
     {
@@ -608,6 +710,10 @@ inline uint32_t sstr_to_uppercase(StaticString *sstr)
  */
 inline uint32_t sstr_to_lowercase(StaticString *sstr)
 {
+    if (sstr == NULL)
+    {
+        return 0;
+    }
     uint32_t count = 0;
     for (uint32_t i = 0; i < sstr->string_length; i++)
     {
@@ -633,6 +739,10 @@ inline uint32_t sstr_to_lowercase(StaticString *sstr)
  */
 inline uint32_t sstr_contains(const StaticString *sstr, char ch)
 {
+    if (sstr == NULL)
+    {
+        return 0;
+    }
     uint32_t count = 0;
     for (uint32_t i = 0; i < sstr->string_length; i++)
     {
@@ -654,15 +764,19 @@ inline uint32_t sstr_contains(const StaticString *sstr, char ch)
  * @param sstr Pointer to the StaticString to search.
  * @param ch The character to find.
  *
- * @return int The index of the first occurrence of the character, or -1 if not found.
+ * @return int32_t The index of the first occurrence of the character, or -1 if not found.
  */
-inline int sstr_first_index_of(const StaticString *sstr, char ch)
+inline int32_t sstr_first_index_of(const StaticString *sstr, char ch)
 {
+    if (sstr == NULL)
+    {
+        return -1;
+    }
     for (uint32_t i = 0; i < sstr->string_length; i++)
     {
         if (sstr->static_string[i] == ch)
         {
-            return (int)i;
+            return (int32_t)i;
         }
     }
     return -1;
@@ -678,15 +792,19 @@ inline int sstr_first_index_of(const StaticString *sstr, char ch)
  * @param sstr Pointer to the StaticString to search.
  * @param ch The character to find.
  *
- * @return int The index of the last occurrence of the character, or -1 if not found.
+ * @return int32_t The index of the last occurrence of the character, or -1 if not found.
  */
-inline int sstr_last_index_of(const StaticString *sstr, char ch)
+inline int32_t sstr_last_index_of(const StaticString *sstr, char ch)
 {
+    if (sstr == NULL)
+    {
+        return -1;
+    }
     for (uint32_t i = sstr->string_length - 1; i >= 0; i--)
     {
         if (sstr->static_string[i] == ch)
         {
-            return (int)i;
+            return (int32_t)i;
         }
     }
     return -1;
