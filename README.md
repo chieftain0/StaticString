@@ -56,8 +56,6 @@ cmake --build .
 
 #### Windows (MSVC / Visual Studio)
 
-Open the **“x64 Native Tools Command Prompt for VS”**, then:
-
 ```bash
 mkdir build
 cd build
