@@ -65,6 +65,8 @@ int main()
     print_static_string(s1, "After sstr_reverse");
 
     cout << flush;
+    
+    getchar();
 
     return 0;
 }
