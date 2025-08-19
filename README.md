@@ -13,7 +13,7 @@ git clone https://github.com/chieftain0/StaticString.git
 or download the header file directly:
 
 ```bash
-wget <https://raw.githubusercontent.com/chieftain0/StaticString/main/include/StaticString.h> -O StaticString.h
+wget https://raw.githubusercontent.com/chieftain0/StaticString/main/include/StaticString.h -O StaticString.h
 ```
 
 Copy the [header file](include/StaticString.h) into your project directory and include it in your source code:
