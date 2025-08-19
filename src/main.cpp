@@ -7,7 +7,7 @@ using namespace std;
 
 void print_static_string(const StaticString &sstr, const char *label)
 {
-    cout << label << ": \"" << sstr_to_cstr(&sstr) << "\" (len=" << (int)sstr_length(&sstr) << ")\n";
+    cout << label << ": \"" << sstr_to_cstr(&sstr) << "\" (len=" << (int)sstr_length(&sstr) << ")" << endl;
 }
 
 int main()
@@ -40,8 +40,8 @@ int main()
     print_static_string(s2, "Copied to s2");
 
     // Equality check
-    cout << "sstr_equals: " << (sstr_equals(&s1, &s2) ? "yes" : "no") << "\n";
-    cout << "sstr_equals_cstr: " << (sstr_equals_cstr(&s1, sstr_to_cstr(&s2)) ? "yes" : "no") << "\n";
+    cout << "sstr_equals: " << (sstr_equals(&s1, &s2) ? "yes" : "no") << endl;
+    cout << "sstr_equals_cstr: " << (sstr_equals_cstr(&s1, sstr_to_cstr(&s2)) ? "yes" : "no") << endl;
 
     // Replace character
     sstr_replace_char_from_index(&s1, 0, 'h');
@@ -49,7 +49,7 @@ int main()
 
     // Pop
     char popped = sstr_pop(&s1);
-    cout << "Popped char: " << popped << "\n";
+    cout << "Popped char: " << popped << endl;
     print_static_string(s1, "After sstr_pop");
 
     // Uppercase
@@ -64,7 +64,7 @@ int main()
     sstr_reverse(&s1);
     print_static_string(s1, "After sstr_reverse");
 
-    getchar();
+    cout << flush;
 
     return 0;
 }
