@@ -8,7 +8,13 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 
-add_executable(${ProjectName}
+set(SOURCES
     src/main.cpp
-    ${PROJECT_SOURCE_DIR}/resources/icon.rc 
 )
+
+# Add Windows-specific resources
+if(WIN32)
+    list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/resources/icon.rc)
+endif()
+
+add_executable(${ProjectName} ${SOURCES})
