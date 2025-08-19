@@ -63,6 +63,14 @@ cmake ..
 cmake --build .
 ```
 
+### 3. Run the executable
+
+```bash
+cd ..
+cd bin
+./StaticString
+```
+
 ## Features
 
 ### Core Initialization
