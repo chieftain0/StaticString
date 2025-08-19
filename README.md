@@ -4,10 +4,65 @@ A lightweight, fixed-size, statically-allocated string type for C/C++. Ideal for
 
 ## Usage
 
+Clone the repo:
+
+```bash
+git clone https://github.com/chieftain0/StaticString.git
+```
+
+or download the header file directly:
+
+```bash
+wget <https://raw.githubusercontent.com/chieftain0/StaticString/main/include/StaticString.h> -O StaticString.h
+```
+
 Copy the [header file](include/StaticString.h) into your project directory and include it in your source code:
 
 ```c
 #include "StaticString.h"
+```
+
+## Example
+
+[src/main.cpp](src/main.cpp) contains example usage that needs to be built with CMake:
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/chieftain0/StaticString.git
+cd StaticString
+```
+
+### 2. Build with CMake
+
+#### Linux / WSL
+
+```bash
+mkdir build && cd build
+cmake ..
+cmake --build .
+```
+
+#### Windows (MinGW)
+
+Make sure `\mingw64\bin` is in your `PATH` (before any conflicting toolchains).
+
+```bash
+mkdir build
+cd build
+cmake -G "MinGW Makefiles" ..
+cmake --build .
+```
+
+#### Windows (MSVC / Visual Studio)
+
+Open the **“x64 Native Tools Command Prompt for VS”**, then:
+
+```bash
+mkdir build
+cd build
+cmake ..
+cmake --build .
 ```
 
 ## Features
