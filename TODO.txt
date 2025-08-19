@@ -6,12 +6,12 @@ sstr_clear(StaticString *sstr) - DONE
 === Append / Modify ===
 sstr_append(StaticString *sstr, char character) - DONE
 sstr_append_cstr(StaticString *sstr, const char *cstr) - DONE
-sstr_replace_char_from_index(StaticString *sstr, uint16_t index, char character) - DONE
+sstr_replace_char_from_index(StaticString *sstr, uint32_t index, char character) - DONE
 sstr_replace_all_chars(StaticString *sstr, char old_char, char new_char) - DONE
-sstr_insert_char_at(StaticString *sstr, uint16_t index, char character) - DONE
-sstr_remove_at(StaticString *sstr, uint16_t index) - DONE
-sstr_remove_range(StaticString *sstr, uint16_t start, uint16_t end) - DONE
-sstr_substring(const StaticString *sstr_source, StaticString *sstr_dest, uint16_t start, uint16_t end) - DONE
+sstr_insert_char_at(StaticString *sstr, uint32_t index, char character) - DONE
+sstr_remove_at(StaticString *sstr, uint32_t index) - DONE
+sstr_remove_range(StaticString *sstr, uint32_t start, uint32_t end) - DONE
+sstr_substring(const StaticString *sstr_source, StaticString *sstr_dest, uint32_t start, uint32_t end) - DONE
 
 === Trim & Whitespace ===
 sstr_trim_leading(StaticString *sstr) - DONE
@@ -28,7 +28,7 @@ sstr_to_cstr(const StaticString *sstr) - DONE
 
 === Removal / Truncate ===
 sstr_pop(StaticString *sstr) - DONE
-sstr_truncate(StaticString *sstr, uint16_t new_length) - DONE
+sstr_truncate(StaticString *sstr, uint32_t new_length) - DONE
 
 === Utility ===
 sstr_length(const StaticString *sstr) - DONE
