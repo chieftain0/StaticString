@@ -184,7 +184,7 @@ inline uint32_t sstr_replace_all_chars(StaticString *sstr, char old_char, char n
  *
  * @return uint32_t The new length of the string, or 0 if the index was out of bounds.
  */
-inline uint32_t sstr_insert_char_at(StaticString *sstr, uint16_t index, char character)
+inline uint32_t sstr_insert_char_at(StaticString *sstr, uint32_t index, char character)
 {
     if (index > sstr->string_length || sstr->string_length >= SSTR_MAX_LENGTH)
     {
@@ -215,7 +215,7 @@ inline uint32_t sstr_insert_char_at(StaticString *sstr, uint16_t index, char cha
  *
  * @return uint32_t The new length of the string.
  */
-inline uint32_t sstr_remove_at(StaticString *sstr, uint16_t index)
+inline uint32_t sstr_remove_at(StaticString *sstr, uint32_t index)
 {
     if (index >= sstr->string_length)
     {
@@ -245,14 +245,14 @@ inline uint32_t sstr_remove_at(StaticString *sstr, uint16_t index)
  *
  * @return uint32_t The new length of the string.
  */
-inline uint32_t sstr_remove_range(StaticString *sstr, uint16_t start, uint16_t end)
+inline uint32_t sstr_remove_range(StaticString *sstr, uint32_t start, uint32_t end)
 {
     if (start >= sstr->string_length || end >= sstr->string_length || start > end)
     {
         return sstr->string_length;
     }
 
-    for (uint16_t i = end + 1; i < sstr->string_length; i++)
+    for (uint32_t i = end + 1; i < sstr->string_length; i++)
     {
         sstr->static_string[i - (end - start + 1)] = sstr->static_string[i];
     }
@@ -280,7 +280,7 @@ inline uint32_t sstr_remove_range(StaticString *sstr, uint16_t start, uint16_t e
  *
  * @return uint8_t 1 if the operation is successful, 0 if the indices are invalid.
  */
-inline uint8_t sstr_substring(const StaticString *sstr_source, StaticString *sstr_dest, uint16_t start, uint16_t end)
+inline uint8_t sstr_substring(const StaticString *sstr_source, StaticString *sstr_dest, uint32_t start, uint32_t end)
 {
     if (start >= sstr_source->string_length || end >= sstr_source->string_length || start > end)
     {
@@ -288,7 +288,7 @@ inline uint8_t sstr_substring(const StaticString *sstr_source, StaticString *sst
     }
 
     sstr_dest->string_length = end - start + 1;
-    for (uint16_t i = 0; i < sstr_dest->string_length; i++)
+    for (uint32_t i = 0; i < sstr_dest->string_length; i++)
     {
         sstr_dest->static_string[i] = sstr_source->static_string[start + i];
     }
