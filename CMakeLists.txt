@@ -14,7 +14,7 @@ set(SOURCES
 
 # Add Windows-specific resources
 if(WIN32)
-    list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/resources/icon.rc)
+    list(APPEND SOURCES ${PROJECT_SOURCE_DIR}/resources/logo.rc)
 endif()
 
 add_executable(${ProjectName} ${SOURCES})
